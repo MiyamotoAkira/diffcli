@@ -34,3 +34,11 @@ func TestCharacterDifferencesAtTheEndOfTheLine(t *testing.T) {
 
 	assert.Equal(t, []core.Change{{1, 2}}, result.Changes)
 }
+
+func TestWhenFirstLineIsShorter(t *testing.T) {
+	result := core.CompareLine("abc", "abcd")
+
+	// Start Index past the last element of line1
+	// End Index is the last element of line 2
+	assert.Equal(t, []core.Change{{3, 3}}, result.Changes)
+}
