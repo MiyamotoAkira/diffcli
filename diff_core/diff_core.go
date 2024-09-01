@@ -1,5 +1,15 @@
 package diff_core
 
+func CompareLines(lines1 []string, lines2 []string) []CompareLineResult {
+	results := []CompareLineResult{}
+
+	for pos, line := range lines1 {
+		results = append(results, CompareLine(line, lines2[pos]))
+	}
+
+	return results
+}
+
 func CompareLine(line1 string, line2 string) CompareLineResult {
 	changes := []Change{}
 	line1Runes := []rune(line1)

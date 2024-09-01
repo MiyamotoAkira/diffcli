@@ -82,3 +82,18 @@ func TestWhenBothLinesAreEmpty(t *testing.T) {
 	// End Index is the last element of line 1
 	assert.Equal(t, []core.Change{}, result.Changes)
 }
+
+func TestSameLines(t *testing.T) {
+	result := core.CompareLine("abc", "abc")
+
+	assert.Equal(t, []core.Change{}, result.Changes)
+	assert.True(t, result.IsSame())
+}
+
+func TestMultipleLinesTheSame(t *testing.T) {
+	result := core.CompareLines([]string{"abc", "def", "ghi"}, []string{"abc", "def", "ghi"})
+
+	assert.Equal(t, []core.CompareLineResult{
+		{[]core.Change{}}, {[]core.Change{}}, {[]core.Change{}},
+	}, result)
+}
