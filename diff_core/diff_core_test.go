@@ -105,3 +105,11 @@ func TestMultipleLinesWithOneDifferent(t *testing.T) {
 		{[]core.Change{}}, {[]core.Change{{1, 1}}}, {[]core.Change{}},
 	}, result)
 }
+
+func TestMultipleLinesGivenFirstHasFewerNumbersOfLines(t *testing.T) {
+	result := core.CompareLines([]string{"abc", "def"}, []string{"abc", "def", "ghi"})
+
+	assert.Equal(t, []core.CompareLineResult{
+		{[]core.Change{}}, {[]core.Change{}}, {[]core.Change{{0, 2}}},
+	}, result)
+}
