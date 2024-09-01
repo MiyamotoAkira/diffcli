@@ -11,8 +11,10 @@ func CompareLine(line1 string, line2 string) CompareLineResult {
 	for pos, char := range line1Runes {
 
 		if pos > len(line2Runes)-1 {
-			onChanges = true
-			startIndex = pos
+			if !onChanges {
+				onChanges = true
+				startIndex = pos
+			}
 			break
 		}
 

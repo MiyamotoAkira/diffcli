@@ -46,7 +46,15 @@ func TestWhenFirstLineIsShorter(t *testing.T) {
 func TestWhenSecondLineIsShorter(t *testing.T) {
 	result := core.CompareLine("abcd", "abc")
 
-	// Start Index past the last element of line1
-	// End Index is the last element of line 2
+	// Start Index past the last element of line2
+	// End Index is the last element of line 1
 	assert.Equal(t, []core.Change{{3, 3}}, result.Changes)
+}
+
+func TestWhenSecondLineIsShorterAndWeAreOnChanges(t *testing.T) {
+	result := core.CompareLine("abzd", "abc")
+
+	// Start Index past the last element of line2
+	// End Index is the last element of line 1
+	assert.Equal(t, []core.Change{{2, 3}}, result.Changes)
 }
