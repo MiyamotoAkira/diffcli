@@ -16,3 +16,9 @@ func TestSingleCharacterDifference(t *testing.T) {
 
 	assert.Equal(t, []core.Change{{1, 1}}, result.Changes)
 }
+
+func TestTwoCharacterDifference(t *testing.T) {
+	result := core.CompareLine("abcd", "azzd")
+
+	assert.Equal(t, []core.Change{{1, 2}}, result.Changes)
+}
