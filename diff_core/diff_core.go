@@ -23,6 +23,10 @@ func CompareLine(line1 string, line2 string) CompareLineResult {
 		}
 
 	}
+	if onChanges {
+		onChanges = false
+		changes = append(changes, Change{startIndex, len(line2Runes) - 1})
+	}
 
 	return CompareLineResult{line1 == line2, changes}
 }

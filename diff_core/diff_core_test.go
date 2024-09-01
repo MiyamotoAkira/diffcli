@@ -28,3 +28,9 @@ func TestTwoLotsOfDifferences(t *testing.T) {
 
 	assert.Equal(t, []core.Change{{1, 2}, {5, 6}}, result.Changes)
 }
+
+func TestCharacterDifferencesAtTheEndOfTheLine(t *testing.T) {
+	result := core.CompareLine("abc", "azz")
+
+	assert.Equal(t, []core.Change{{1, 2}}, result.Changes)
+}
