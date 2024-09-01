@@ -8,7 +8,7 @@ import (
 
 func TestCompareLinesSingleDifference(t *testing.T) {
 	result := core.CompareLine("a", "b")
-	assert.False(t, result.IsSame)
+	assert.False(t, result.IsSame())
 }
 
 func TestSingleCharacterDifference(t *testing.T) {

@@ -41,12 +41,15 @@ func CompareLine(line1 string, line2 string) CompareLineResult {
 		changes = append(changes, Change{len(line1Runes), len(line2Runes) - 1})
 	}
 
-	return CompareLineResult{line1 == line2, changes}
+	return CompareLineResult{changes}
 }
 
 type CompareLineResult struct {
-	IsSame  bool
 	Changes []Change
+}
+
+func (result *CompareLineResult) IsSame() bool {
+	return len(result.Changes) == 0
 }
 
 type Change struct {
