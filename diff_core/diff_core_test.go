@@ -1,7 +1,7 @@
 package diff_core_test
 
 import (
-	core "diff_go/diff_core"
+	core "github.com/MiyamotoAkira/diffcli/diff_core"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

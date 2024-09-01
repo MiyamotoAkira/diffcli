@@ -1,4 +1,4 @@
-module diff_go
+module github.com/MiyamotoAkira/diffcli
 
 go 1.22.5
 
