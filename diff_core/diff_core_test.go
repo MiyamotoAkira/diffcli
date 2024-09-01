@@ -121,3 +121,21 @@ func TestMultipleLinesGivenSecondHasFewerNumbersOfLines(t *testing.T) {
 		{[]core.Change{}}, {[]core.Change{}}, {[]core.Change{{0, 2}}},
 	}, result)
 }
+
+func TestMultipleLinesGivenSecondHasSeveralFewerNumbersOfLines(t *testing.T) {
+	result := core.CompareLines([]string{"abc", "def", "ghi", "ghi", "ghi"}, []string{"abc", "def"})
+
+	assert.Equal(t, []core.CompareLineResult{
+		{[]core.Change{}},
+		{[]core.Change{}},
+		{[]core.Change{{0, 2}}},
+		{[]core.Change{{0, 2}}},
+		{[]core.Change{{0, 2}}},
+	}, result)
+}
+
+func TestEmptyComparisons(t *testing.T) {
+	result := core.CompareLines([]string{}, []string{})
+
+	assert.Equal(t, []core.CompareLineResult{}, result)
+}
