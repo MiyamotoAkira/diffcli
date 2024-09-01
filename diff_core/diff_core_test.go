@@ -58,3 +58,27 @@ func TestWhenSecondLineIsShorterAndWeAreOnChanges(t *testing.T) {
 	// End Index is the last element of line 1
 	assert.Equal(t, []core.Change{{2, 3}}, result.Changes)
 }
+
+func TestWhenFirstLineIsEmpty(t *testing.T) {
+	result := core.CompareLine("", "abcd")
+
+	// Start Index past the last element of line1
+	// End Index is the last element of line 2
+	assert.Equal(t, []core.Change{{0, 3}}, result.Changes)
+}
+
+func TestWhenSecondLineIsEmpty(t *testing.T) {
+	result := core.CompareLine("abc", "")
+
+	// Start Index past the last element of line 2
+	// End Index is the last element of line 1
+	assert.Equal(t, []core.Change{{0, 2}}, result.Changes)
+}
+
+func TestWhenBothLinesAreEmpty(t *testing.T) {
+	result := core.CompareLine("", "")
+
+	// Start Index past the last element of line 2
+	// End Index is the last element of line 1
+	assert.Equal(t, []core.Change{}, result.Changes)
+}
