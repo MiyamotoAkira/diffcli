@@ -9,6 +9,13 @@ func CompareLine(line1 string, line2 string) CompareLineResult {
 	var startIndex int
 
 	for pos, char := range line1Runes {
+
+		if pos > len(line2Runes)-1 {
+			onChanges = true
+			startIndex = pos
+			break
+		}
+
 		altChar := line2Runes[pos]
 		if char != altChar {
 			if !onChanges {
@@ -25,7 +32,7 @@ func CompareLine(line1 string, line2 string) CompareLineResult {
 	}
 	if onChanges {
 		onChanges = false
-		changes = append(changes, Change{startIndex, len(line2Runes) - 1})
+		changes = append(changes, Change{startIndex, len(line1Runes) - 1})
 	}
 
 	if len(line2Runes) > len(line1Runes) {
