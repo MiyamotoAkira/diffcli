@@ -97,3 +97,11 @@ func TestMultipleLinesTheSame(t *testing.T) {
 		{[]core.Change{}}, {[]core.Change{}}, {[]core.Change{}},
 	}, result)
 }
+
+func TestMultipleLinesWithOneDifferent(t *testing.T) {
+	result := core.CompareLines([]string{"abc", "def", "ghi"}, []string{"abc", "dzf", "ghi"})
+
+	assert.Equal(t, []core.CompareLineResult{
+		{[]core.Change{}}, {[]core.Change{{1, 1}}}, {[]core.Change{}},
+	}, result)
+}
