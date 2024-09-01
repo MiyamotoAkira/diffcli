@@ -4,6 +4,13 @@ func CompareLines(lines1 []string, lines2 []string) []CompareLineResult {
 	results := []CompareLineResult{}
 
 	for pos, line := range lines1 {
+		if pos > len(lines2)-1 {
+			for i := range len(lines1) - len(lines2) {
+				index := len(lines2) + i
+				results = append(results, CompareLineResult{[]Change{{0, len(lines1[index]) - 1}}})
+			}
+			break
+		}
 		results = append(results, CompareLine(line, lines2[pos]))
 	}
 
