@@ -1,4 +1,4 @@
-module diff_cli
+module diff_go
 
 go 1.22.5
 
