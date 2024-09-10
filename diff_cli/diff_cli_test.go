@@ -65,6 +65,15 @@ func (suite *FileTestSuite) TestCompareEmptyFiles() {
 	suite.Equal("", result)
 }
 
+func (suite *FileTestSuite) TestCompareEqualFiles() {
+	createFile(suite.file1Name, []string{"darth vader", "luke skywalker", "han solo"})
+	createFile(suite.file2Name, []string{"darth vader", "luke skywalker", "han solo"})
+
+	result := cli.CompareFiles(suite.file1Name, suite.file2Name)
+
+	suite.Equal("", result)
+}
+
 func TestFileTestSuite(t *testing.T) {
 	suite.Run(t, new(FileTestSuite))
 }
