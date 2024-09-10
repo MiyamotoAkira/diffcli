@@ -57,6 +57,15 @@ func (suite *FileTestSuite) TestCompareTwoFiles() {
 	assert.Equal(suite.T(), "- def\n+ dzf\n- ghi\n+", result)
 }
 
+func (suite *FileTestSuite) TestCompareEmptyFiles() {
+	createFile(suite.file1Name, []string{""})
+	createFile(suite.file2Name, []string{""})
+
+	result := cli.CompareFiles(suite.file1Name, suite.file2Name)
+
+	suite.Equal("", result)
+}
+
 func TestFileTestSuite(t *testing.T) {
 	suite.Run(t, new(FileTestSuite))
 }
