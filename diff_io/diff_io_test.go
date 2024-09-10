@@ -1,6 +1,7 @@
 package diff_io_test
 
 import (
+	"fmt"
 	cli "github.com/MiyamotoAkira/diffcli/diff_io"
 	"github.com/stretchr/testify/suite"
 	"os"
@@ -94,4 +95,63 @@ func (suite *FileTestSuite) TestFirstFileDoesNotExist() {
 
 func TestFileTestSuite(t *testing.T) {
 	suite.Run(t, new(FileTestSuite))
+}
+
+type DirectoryTestSuite struct {
+	suite.Suite
+	folder1Name string
+	folder2Name string
+}
+
+func (suite *DirectoryTestSuite) SetupTest() {
+	folder, err := os.MkdirTemp("./", "temp")
+	if err != nil {
+		panic("Error creating directory")
+	}
+	suite.folder1Name = folder
+
+	folder, err = os.MkdirTemp("./", "temp")
+	if err != nil {
+		panic("Error creating directory")
+	}
+	suite.folder2Name = folder
+}
+
+func (suite *DirectoryTestSuite) TearDownTest() {
+	err := os.RemoveAll(suite.folder1Name)
+
+	if err != nil {
+		panic("Issue removing folder " + suite.folder1Name)
+	}
+
+	err = os.RemoveAll(suite.folder2Name)
+
+	if err != nil {
+		panic("Issue removing folder " + suite.folder2Name)
+	}
+}
+
+func (suite *DirectoryTestSuite) TestTwoEmptyDirectory() {
+
+	result := cli.CompareDirectories(suite.folder1Name, suite.folder2Name)
+
+	suite.Equal("", result)
+}
+
+func (suite *DirectoryTestSuite) TestCompareCompletelyDifferentDirectories() {
+	file1Name := "file1.test"
+	file2Name := "file2.test"
+	file1Path := suite.folder1Name + "/" + file1Name
+	file2Path := suite.folder2Name + "/" + file2Name
+
+	createFile(file1Path, []string{})
+	createFile(file2Path, []string{})
+	result := cli.CompareDirectories(suite.folder1Name, suite.folder2Name)
+
+	// Probably the last \n shouldn't be there
+	suite.Equal(fmt.Sprintf("Only in %s: %s\nOnly in %s: %s\n", suite.folder1Name, file1Name, suite.folder2Name, file2Name), result)
+}
+
+func TestDirectoryTestSuite(t *testing.T) {
+	suite.Run(t, new(DirectoryTestSuite))
 }

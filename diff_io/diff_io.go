@@ -57,3 +57,55 @@ func readFile(file1Name string) ([]string, error) {
 	}
 	return file1Lines, nil
 }
+
+func CompareDirectories(directory1 string, directory2 string) string {
+	filesDirectory1, err := os.ReadDir(directory1)
+	if err != nil {
+		return "Failed reading " + directory1
+	}
+
+	filesDirectory2, err := os.ReadDir(directory2)
+	if err != nil {
+		return "Failed reading " + directory2
+	}
+
+	var filesDirectory1Map = make(map[string]string)
+	var filesDirectory2Map = make(map[string]string)
+
+	for _, entry := range filesDirectory1 {
+		filesDirectory1Map[entry.Name()] = entry.Name()
+	}
+
+	for _, entry := range filesDirectory2 {
+		filesDirectory2Map[entry.Name()] = entry.Name()
+	}
+
+	var onlyInDirectory1 []string
+	var onlyInDirectory2 []string
+
+	for k := range filesDirectory1Map {
+		_, ok := filesDirectory2Map[k]
+		if !ok {
+			onlyInDirectory1 = append(onlyInDirectory1, k)
+		}
+	}
+
+	for k := range filesDirectory2Map {
+		_, ok := filesDirectory1Map[k]
+		if !ok {
+			onlyInDirectory2 = append(onlyInDirectory2, k)
+		}
+	}
+
+	var output strings.Builder
+
+	for _, entry := range onlyInDirectory1 {
+		output.WriteString(fmt.Sprintf("Only in %s: %s\n", directory1, entry))
+	}
+
+	for _, entry := range onlyInDirectory2 {
+		output.WriteString(fmt.Sprintf("Only in %s: %s\n", directory2, entry))
+	}
+
+	return output.String()
+}
