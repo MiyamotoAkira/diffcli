@@ -3,9 +3,31 @@ package diff_cli_test
 import (
 	cli "github.com/MiyamotoAkira/diffcli/diff_cli"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 	"os"
 	"testing"
 )
+
+type FileTestSuite struct {
+	suite.Suite
+	folderName string
+}
+
+func (suite *FileTestSuite) SetupSuite() {
+	folder, err := os.MkdirTemp("./", "temp")
+	if err != nil {
+		panic("Error creating directory")
+	}
+	suite.folderName = folder
+}
+
+func (suite *FileTestSuite) TearDownSuite() {
+	err := os.RemoveAll(suite.folderName)
+
+	if err != nil {
+		panic("Issue removing folder " + suite.folderName)
+	}
+}
 
 func createFile(fileName string, fileContent []string) {
 	f, err := os.Create(fileName)
@@ -22,23 +44,18 @@ func createFile(fileName string, fileContent []string) {
 	}
 }
 
-func TestCompareTwoFiles(t *testing.T) {
-	folder, err := os.MkdirTemp("./", "temp")
-	if err != nil {
-		panic("Error creating directory")
-	}
-	var file1Name = folder + "/" + "file1.txt"
-	var file2Name = folder + "/" + "file2.txt"
+func (suite *FileTestSuite) TestCompareTwoFiles() {
+	var file1Name = suite.folderName + "/" + "file1.txt"
+	var file2Name = suite.folderName + "/" + "file2.txt"
 	createFile(file1Name, []string{"abc", "def", "ghi"})
 	createFile(file2Name, []string{"abc", "dzf"})
 	var result string
 
 	result = cli.CompareFiles(file1Name, file2Name)
-	assert.Equal(t, "- def\n+ dzf\n- ghi\n+", result)
+	assert.Equal(suite.T(), "- def\n+ dzf\n- ghi\n+", result)
 
-	err = os.RemoveAll(folder)
+}
 
-	if err != nil {
-		panic("Issue removing folder " + folder)
-	}
+func TestFileTestSuite(t *testing.T) {
+	suite.Run(t, new(FileTestSuite))
 }
