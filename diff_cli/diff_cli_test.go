@@ -2,7 +2,6 @@ package diff_cli_test
 
 import (
 	cli "github.com/MiyamotoAkira/diffcli/diff_cli"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	"os"
 	"testing"
@@ -54,7 +53,7 @@ func (suite *FileTestSuite) TestCompareTwoFiles() {
 
 	result := cli.CompareFiles(suite.file1Name, suite.file2Name)
 
-	assert.Equal(suite.T(), "- def\n+ dzf\n- ghi\n+", result)
+	suite.Equal("- def\n+ dzf\n- ghi\n+", result)
 }
 
 func (suite *FileTestSuite) TestCompareEmptyFiles() {
