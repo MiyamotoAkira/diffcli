@@ -1,7 +1,7 @@
-package diff_cli_test
+package diff_io_test
 
 import (
-	cli "github.com/MiyamotoAkira/diffcli/diff_cli"
+	cli "github.com/MiyamotoAkira/diffcli/diff_io"
 	"github.com/stretchr/testify/suite"
 	"os"
 	"testing"

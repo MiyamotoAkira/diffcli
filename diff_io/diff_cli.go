@@ -1,4 +1,4 @@
-package diff_cli
+package diff_io
 
 import (
 	"bufio"
