@@ -1,49 +1,39 @@
 package diff_cli
 
 import (
+	"bufio"
 	"fmt"
+	core "github.com/MiyamotoAkira/diffcli/diff_core"
 	"os"
 	"strings"
-
-	core "github.com/MiyamotoAkira/diffcli/diff_core"
 )
 
 func CompareFiles(file1Name string, file2Name string) string {
 
-	file1Content, err := os.ReadFile(file1Name)
-
+	file1, err := os.Open(file1Name)
 	if err != nil {
 		return "Error"
 	}
-
-	file2Content, err := os.ReadFile(file2Name)
-
+	defer file1.Close()
+	file1Scanner := bufio.NewScanner(file1)
+	file2, err := os.Open(file2Name)
 	if err != nil {
 		return "Error"
 	}
+	defer file2.Close()
+	file2Scanner := bufio.NewScanner(file2)
 
-	file1Lines := strings.Split(string(file1Content), "\n")
-	file2Lines := strings.Split(string(file2Content), "\n")
-	println(string(file1Content))
-	println(file1Lines)
-	println("********************")
-	println(len(file1Lines))
-	println("********************")
-	println(string(file2Content))
-	println(file2Lines)
-	println("********************")
-	println(len(file2Lines))
-	println("********************")
+	var file1Lines []string
+	for file1Scanner.Scan() {
+		file1Lines = append(file1Lines, file1Scanner.Text())
+	}
+	var file2Lines []string
+	for file2Scanner.Scan() {
+		file2Lines = append(file2Lines, file2Scanner.Text())
+	}
 
 	result := core.CompareLines(file1Lines, file2Lines)
 
-	// {[]core.Change{}},
-	// {[]core.Change{{1, 1}}},
-	// {[]core.Change{{0, 2}}},
-
-	println("********************")
-	println(len(result))
-	println("********************")
 	var output strings.Builder
 	for pos, change := range result {
 		if !change.IsSame() {
@@ -59,7 +49,9 @@ func CompareFiles(file1Name string, file2Name string) string {
 			} else {
 				output.WriteString("+")
 			}
-			output.WriteString("\n")
+			if pos < len(result)-1 {
+				output.WriteString("\n")
+			}
 		}
 	}
 

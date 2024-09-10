@@ -13,5 +13,4 @@ func TestCompareTwoFiles(t *testing.T) {
 
 	result = cli.CompareFiles(file1Name, file2Name)
 	assert.Equal(t, "- def\n+ dzf\n- ghi\n+", result)
-
 }
