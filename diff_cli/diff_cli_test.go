@@ -13,7 +13,7 @@ type FileTestSuite struct {
 	folderName string
 }
 
-func (suite *FileTestSuite) SetupSuite() {
+func (suite *FileTestSuite) SetupTest() {
 	folder, err := os.MkdirTemp("./", "temp")
 	if err != nil {
 		panic("Error creating directory")
@@ -21,7 +21,7 @@ func (suite *FileTestSuite) SetupSuite() {
 	suite.folderName = folder
 }
 
-func (suite *FileTestSuite) TearDownSuite() {
+func (suite *FileTestSuite) TearDownTest() {
 	err := os.RemoveAll(suite.folderName)
 
 	if err != nil {
