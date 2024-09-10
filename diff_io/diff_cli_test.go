@@ -74,22 +74,22 @@ func (suite *FileTestSuite) TestCompareEqualFiles() {
 	suite.Equal("", result)
 }
 
-func (suite *FileTestSuite) TestFirstFileDoesNotExist() {
+func (suite *FileTestSuite) TestSecondFileDoesNotExist() {
 	createFile(suite.file1Name, []string{"abc", "def", "ghi"})
 	//do not create second file
 
 	result := cli.CompareFiles(suite.file1Name, suite.file2Name)
 
-	suite.Equal("error", result)
+	suite.Contains(result, "error cannot read file 2")
 }
 
-func (suite *FileTestSuite) TestSecondFileDoesNotExist() {
+func (suite *FileTestSuite) TestFirstFileDoesNotExist() {
 	//do not create first file
 	createFile(suite.file2Name, []string{"abc", "def", "ghi"})
 
 	result := cli.CompareFiles(suite.file1Name, suite.file2Name)
 
-	suite.Equal("error", result)
+	suite.Contains(result, "error cannot read file 1")
 }
 
 func TestFileTestSuite(t *testing.T) {

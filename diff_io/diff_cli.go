@@ -11,8 +11,11 @@ import (
 func CompareFiles(file1Name string, file2Name string) string {
 	file1Lines, err1 := readFile(file1Name)
 	file2Lines, err2 := readFile(file2Name)
-	if err1 != nil || err2 != nil {
-		return "error"
+	if err1 != nil {
+		return "error cannot read file 1 " + err1.Error()
+	}
+	if err2 != nil {
+		return "error cannot read file 2 " + err2.Error()
 	}
 
 	result := core.CompareLines(file1Lines, file2Lines)
