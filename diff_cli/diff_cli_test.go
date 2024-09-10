@@ -11,6 +11,8 @@ import (
 type FileTestSuite struct {
 	suite.Suite
 	folderName string
+	file1Name  string
+	file2Name  string
 }
 
 func (suite *FileTestSuite) SetupTest() {
@@ -19,6 +21,8 @@ func (suite *FileTestSuite) SetupTest() {
 		panic("Error creating directory")
 	}
 	suite.folderName = folder
+	suite.file1Name = suite.folderName + "/" + "file1.txt"
+	suite.file2Name = suite.folderName + "/" + "file2.txt"
 }
 
 func (suite *FileTestSuite) TearDownTest() {
@@ -45,15 +49,12 @@ func createFile(fileName string, fileContent []string) {
 }
 
 func (suite *FileTestSuite) TestCompareTwoFiles() {
-	var file1Name = suite.folderName + "/" + "file1.txt"
-	var file2Name = suite.folderName + "/" + "file2.txt"
-	createFile(file1Name, []string{"abc", "def", "ghi"})
-	createFile(file2Name, []string{"abc", "dzf"})
-	var result string
+	createFile(suite.file1Name, []string{"abc", "def", "ghi"})
+	createFile(suite.file2Name, []string{"abc", "dzf"})
 
-	result = cli.CompareFiles(file1Name, file2Name)
+	result := cli.CompareFiles(suite.file1Name, suite.file2Name)
+
 	assert.Equal(suite.T(), "- def\n+ dzf\n- ghi\n+", result)
-
 }
 
 func TestFileTestSuite(t *testing.T) {
