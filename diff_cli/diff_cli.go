@@ -9,27 +9,10 @@ import (
 )
 
 func CompareFiles(file1Name string, file2Name string) string {
-
-	file1, err := os.Open(file1Name)
-	if err != nil {
-		return "Error"
-	}
-	defer file1.Close()
-	file1Scanner := bufio.NewScanner(file1)
-	file2, err := os.Open(file2Name)
-	if err != nil {
-		return "Error"
-	}
-	defer file2.Close()
-	file2Scanner := bufio.NewScanner(file2)
-
-	var file1Lines []string
-	for file1Scanner.Scan() {
-		file1Lines = append(file1Lines, file1Scanner.Text())
-	}
-	var file2Lines []string
-	for file2Scanner.Scan() {
-		file2Lines = append(file2Lines, file2Scanner.Text())
+	file1Lines, err1 := readFile(file1Name)
+	file2Lines, err2 := readFile(file2Name)
+	if err1 != nil || err2 != nil {
+		return "error"
 	}
 
 	result := core.CompareLines(file1Lines, file2Lines)
@@ -56,4 +39,18 @@ func CompareFiles(file1Name string, file2Name string) string {
 	}
 
 	return output.String()
+}
+
+func readFile(file1Name string) ([]string, error) {
+	file1, err := os.Open(file1Name)
+	if err != nil {
+		return nil, err
+	}
+	defer file1.Close()
+	file1Scanner := bufio.NewScanner(file1)
+	var file1Lines []string
+	for file1Scanner.Scan() {
+		file1Lines = append(file1Lines, file1Scanner.Text())
+	}
+	return file1Lines, nil
 }
